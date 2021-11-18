@@ -1,0 +1,90 @@
+package web
+
+import (
+	"cmdb/utils"
+	"encoding/gob"
+	//"encoding/json"
+	"fmt"
+	"google/uuid"
+	"net/http"
+	"os"
+	"path"
+	"strings"
+
+	//path2 "path"
+)
+
+var sessionName string
+
+const (
+
+	sessionDir  = "D:/GoProject/src/Mage/cmdb/temp/sessions/"
+	//sessionDir  = "D:\\GoProject\\Mage\\cmdb\\temp\\sessions"
+	//sessionDir  = "D:\\/GoProject\\/Mage\\/cmdb\\/temp\\/sessions"
+)
+
+type Session struct {
+	ID     string
+	Values map[string]interface{}
+}
+
+func (s *Session) Set(name string, value interface{}) {
+	s.Values[name] = value
+}
+
+func (s *Session) Get(name string) interface{} {
+	return s.Values[name]
+}
+
+func LoadSession(w http.ResponseWriter, r *http.Request) *Session { // 从 cookie 中读取 sid 并加载 session 文件
+	if cookie, err := r.Cookie(sessionName); err == nil {
+		fmt.Println("cookie: ", cookie, cookie.Value, utils.IsLetterOrNum(cookie.Value))
+		// if cookie != nil && cookie.Value != nil && utils.IsLetterOrNum(cookie.Value) { // 判断 cookie.Value 是否为空不能使用 nil ，必须使用 ""
+		if cookie != nil && cookie.Value != "" && utils.IsLetterOrNum(cookie.Value) { // 如果 cookie 存在且它的值不为空，并且它的值都是英文字母或者数字
+			fpath := path.Join(sessionDir, cookie.Value)     // session 的路径
+			if fhandler, err := os.Open(fpath); err == nil { // 如果读取
+				defer fhandler.Close()
+				var session Session
+				//decoder := json.NewDecoder(fhandler)
+				decoder := gob.NewDecoder(fhandler)
+				if err := decoder.Decode(&session); err == nil {
+					// session 有效
+					fmt.Println("session: ", session)
+					return &session
+				} else {
+					fmt.Println("json decode: ", err)
+				}
+				// 删除文件
+			} else {
+				fmt.Println("fpath: ", err)
+			}
+		}
+	} else {
+		fmt.Println("cookie err: ", err)
+	}
+
+	sid := strings.ReplaceAll(uuid.New().String(), "-", "") // 使用 strings.ReplaceAll 把生成的 uuid 中的中划线去掉
+	http.SetCookie(w, &http.Cookie{
+		Name:  sessionName,
+		Value: sid,
+		Path:  "/",
+	})
+	// 如果 session 文件不存在，则生成 session 文件
+	return &Session{
+		ID:     sid,
+		Values: make(map[string]interface{}),
+	}
+}
+
+func DumpSession(w http.ResponseWriter, r *http.Request, session *Session) error { // 将 session 存储到对应的文件中
+	fpath := path.Join(sessionDir, session.ID)
+	if fhandler, err := os.Create(fpath); err != nil {
+		return err
+	} else {
+		defer fhandler.Close()
+		//encoder := json.NewEncoder(fhandler)
+		encoder := gob.NewEncoder(fhandler)
+		err := encoder.Encode(session)
+		return err
+	}
+}

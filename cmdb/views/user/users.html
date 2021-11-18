@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>用户列表</title>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Sex</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range . }}
+                <tr>
+                    <td>{{ .ID }}</td>
+                    <td>{{ .Name }}</td>
+                    <!-- td>{{ .Sex }}</td -->
+                    <!-- 在模板中判断性别的方式如下（逻辑处理尽量不要放在前端，而是放在后端处理）：-->
+                    <!-- td>{{ if .Sex }}男{{else}}女{{ end }}</td -->
+                    <td>{{ .SexText }}</td>
+                    <td>
+                        <a href="/user/edit/?id={{ .ID }}">编辑</a>
+                        <a href="/user/delete/?id={{ .ID }}">删除</a>
+                    </td>
+                </tr>
+                {{ else }}
+                <tr>
+                    <!-- 但无数据时，需要合并多列。因为上面 range 循环查询了 4 列（用户共有 4 个信息），所以这里合并的数量为 4 列-->
+                    <td colspan="4">无数据</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </body>
+</html>
