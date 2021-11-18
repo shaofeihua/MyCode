@@ -4,7 +4,7 @@ import (
 	"cmdb/utils"
 	"encoding/gob"
 	//"encoding/json"
-	"google/uuid"
+	"github.com/google/uuid"
 	"net/http"
 	"os"
 	"path"
