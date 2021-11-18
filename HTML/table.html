@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- thead，表头 -->
+<!-- tr，行 -->
+<!-- th，列 -->
+<!-- tbody，表体 -->
+<!-- td，表体里面的列 -->
+<!-- border，显示表框 -->
+<!-- tfoot，表尾。很少用到 -->
+<!-- td 中的 colspan，横向合并 -->
+<!-- td 中的 a，超链接 -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>表格</title>
+	</head>
+	<body>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>名称</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>涛涛</td>
+					<td>看电视</td>
+				</tr>
+				<tr>
+					<td colspan="2">2</td> <!-- 默认从第一个格，横向向后合并 -->
+					<!-- td>萌萌</td -->
+					<td>洗衣服</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>萌萌</td>
+					<td>哄孩子</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>小楠</td>
+					<td>做作业</td>
+				</tr>
+				<tr>
+					<td rowspan="2">5</td> <!-- 向下合并 -->
+					<td>小楠</td>
+					<td>做作业</td>
+				</tr>
+				<tr>
+					<td>小楠</td>
+					<td>做作业</td>
+				</tr>
+				<tr>
+					<td>7</td>
+					<td>
+						<a href="/user/modify?id=7">编辑</a>
+					</td>
+					<td>
+						<a href="/user/delete?id=7&abc=111">删除</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

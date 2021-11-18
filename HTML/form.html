@@ -1,0 +1,87 @@
+<!DOCTYE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>表单</title>
+	</head>
+	<body>
+		<!--
+			表单，用于向服务器提交数据，form 表单内的元素会进行整体提交
+			提交到哪里？地址：action
+			提交的方式（方法）：method = GET/POST 默认是GET
+			编码方式：
+				enctype = applicatione/x-www-form-urlencoded，默认，非 file 使用
+				enctype = multipart/form-data，file，即上传文件使用
+		-->
+		<form method="POST">
+			<!-- 让用户能够输入的标签 -->
+			<!-- input，实现输入框。placeholder，实现输入框中的输入提示。当真正输入一些值后，覆盖掉该提示。此时 value 信息应为空 -->
+			<!-- value 可以指定 name 的默认值 -->
+			<!-- readonly 用于保证默认的 value 值不可以被更改 -->
+			<!-- disabled 用于保证默认的 value 值不可以被更改 -->
+			<!-- lable 可以给输入框添加名称 -->
+			<!-- br / 用于换行 -->
+			<!-- radio，单选框。同时存在多个radio时，默认是不互斥的，可以多选。当给radio添加name后，如果name的值相同，则多个radio选项会互斥，实现真正的单选 -->
+			<!-- radio，单选框。加上checked，该radio就是默认选项 -->
+			<!-- checkbox，复选框。加上checked，该checkbox就是默认选项 -->
+			<!-- select，下拉选择框。默认选中第一个选项。multiple，下拉框中可以选中多个 -->
+			<!-- option 中的 selected 作为默认选项 -->
+			<!-- textarea，实现文本输入框 -->
+			<!-- input type="file"，实现文件上传功能 -->
+			<input type="hidden" name="id" value="123"/>
+			<div>
+				<label>用户ID：</label>
+				<input type="text" name="userid" value="楠楠自语" readonly="readonly"/><br/>
+			</div>
+			<div>
+				<label>用户ID：</label>
+				<input type="text" name="userid" value="楠楠自语" readonly="disabled"/><br/>
+			</div>
+			<div>
+				<label>用户名：</label>
+				<!-- input type="text" name="username" value="楠楠自语"/ -->
+				<input type="text" name="username" placeholder="请输入用户名" value=""/>
+			</div>
+			<div>
+				<label>密码：</label><input type="password" name="password"/>
+			</div>
+			<div>
+				<label>出生日期：</label>
+				<input type="datetime-local" name="birthday"/>
+				<input type="datetime" name="birthday"/>
+				<input type="date" name="birthday"/>
+			</div>
+			<div>
+				<label>性别：</label>
+				<input  type="radio" name="sex" checked="checked" value="1" /> <label>男</label>
+				<input  type="radio" name="sex" value="0" /> <label>女</label>
+			</div>
+			<div>
+				<label>爱好：</label>
+				<input  type="checkbox" name="hobby" value="basketball" /> <label>篮球</label>
+				<input  type="checkbox" name="hobby" checked="checked" value="football" /> <label>足球</label>
+			</div>
+			<div>
+				<label>省份：</label>
+				<select name="provider" multiple="multiple">
+					<option value="shanxi">陕西</option>
+					<option value="shandong" selected="selected">山东</option>
+					<option value="hebei">河北</option>
+				</select>
+			</div>
+			<div>
+				<label>介绍</label>
+				<textarea name="desc">个人介绍</textarea>
+			</div>
+			<input type="submit" value="登录"/><br/> <!-- 不定义 value 时，默认显示“提交” -->
+		</form>
+		<form method="POST" enctype="multipart/form-data">
+			<div>
+				<input type="file" name="img">
+			</div>
+			<div>
+				<input type="submit">
+			</div>
+		</form>
+	</body>
+</html>
