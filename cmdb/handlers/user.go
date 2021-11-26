@@ -1,28 +1,27 @@
 package handlers
 
 import (
-	"MyGoCode/cmdb/services"
-	"MyGoCode/cmdb/utils"
-	"MyGoCode/cmdb/web"
-	//"cmdb/services"
-	//"cmdb/utils"
-	//"cmdb/web"
-	"fmt"
+	"cmdb/models"
+	"cmdb/services"
+	"cmdb/utils"
+	"cmdb/web"
 	"net/http"
 	"strconv"
 )
 
 func QueryUsersHandler(w http.ResponseWriter, r *http.Request) {
 	// 客户端发请求查询用户信息时，通常先验证是否已登录
-	session := web.LoadSession(w, r)
-	if _, ok := session.Get("uid").(int); !ok {
-		fmt.Println("check: ", session, session.Get("uid"), session.Get("uid").(int))
-		//	未登录，则跳转到登录页面
+	token := web.LoadToken(w, r) // 加载token
+	uid, ok := token.Get("uid").(int64)
+
+	if !ok {
+		// 已登录, 跳转到登陆页面
 		http.Redirect(w, r, "/login/", http.StatusFound)
 		return
 	}
 
 	users := services.QueryUsers("")
+	currentUser := services.GetUserById(uid)
 	/*
 		// 加载模板&执行模板
 		tpl, err := template.ParseFiles("D:\\GoProject\\Mage\\cmdb\\views\\user\\users.html")
@@ -36,13 +35,17 @@ func QueryUsersHandler(w http.ResponseWriter, r *http.Request) {
 	*/
 
 	// 使用自定义函数来加载模板&执行模板
-	utils.ParseTemplate(w, r, []string{"D:\\GoProject\\src\\Mage\\cmdb\\views\\user\\users.html"}, "users.html", users)
+	//utils.ParseTemplate(w, r, []string{"D:\\GoProject\\src\\MyGoCode\\cmdb\\views\\user\\users.html"}, "users.html", users)
+	utils.ParseTemplate(w, r, []string{"D:\\GoProject\\src\\MyGoCode\\cmdb\\views\\user\\users.html"}, "users.html", struct {
+		CurrentUser *models.User
+		Users       []models.User
+	}{currentUser, users})
 }
 
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	// 要删除某用户信息时，通常先验证是否已登录
-	session := web.LoadSession(w, r)
-	if _, ok := session.Get("uid").(int); !ok {
+	token := web.LoadToken(w, r)
+	if _, ok := token.Get("uid").(int64); !ok {
 		//	未登录，则跳转到登录页面
 		http.Redirect(w, r, "/login/", http.StatusFound)
 		return

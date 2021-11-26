@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"golang.org/x/crypto/bcrypt"
+	"time"
+)
 
 type User struct {
 	Id           int64
@@ -26,4 +29,18 @@ func (u *User) SexText() string {
 		return "男"
 	}
 	return "女"
+}
+
+func (u *User) SetPassword(password string) error {
+	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	u.Password = string(hashed)
+	return nil
+}
+
+func (u *User) ValidPassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+	return err == nil
 }
