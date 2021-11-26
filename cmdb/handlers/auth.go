@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"cmdb/services"
-	"cmdb/utils"
-	"cmdb/web"
+	"MyGoCode/cmdb/services"
+	"MyGoCode/cmdb/utils"
+	"MyGoCode/cmdb/web"
 	"fmt"
 	"net/http"
 )
@@ -26,7 +26,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 		if user := services.ValidataLogin(name, password); user != nil {
 			// 用户名和密码验证成功，登录成功后跳转到其他位置
-			session.Set("uid", user.ID) // 设置用户登录状态。框架中没有，需要自己写
+			session.Set("uid", user.Id) // 设置用户登录状态。框架中没有，需要自己写
 			web.DumpSession(w,r,session)    // 将 session 持久化存储。框架中通常已有，不需要自己写
 			http.Redirect(w, r, "/users/", http.StatusFound)
 			return // 这里为什么要返回？？？

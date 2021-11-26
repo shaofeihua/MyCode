@@ -1,21 +1,22 @@
 package services
 
 import (
+	//"MyGoCode/cmdb/models"
 	"cmdb/models"
 )
 
 var users = []models.User{
-	models.User{1, "春景", true},
-	models.User{2, "小楠", true},
-	models.User{3, "莹莹", true},
-	models.User{4, "混混", false},
+	//models.User{1, "春景", true},
+	//models.User{2, "小楠", true},
+	//models.User{3, "莹莹", true},
+	//models.User{4, "混混", false},
 }
 
 func QueryUsers(q string) []models.User {
 	return users
 }
 
-func DeleteUser(id int) {
+func DeleteUser(id int64) {
 	/*
 		根据 ID 删除用户的逻辑：
 			1、创建一个临时的空切片。
@@ -26,7 +27,7 @@ func DeleteUser(id int) {
 	*/
 	tempUsers := make([]models.User, 0, len(users))
 	for _, user := range users {
-		if user.ID == id {
+		if user.Id == id {
 			continue
 		}
 		tempUsers = append(tempUsers, user)

@@ -1,9 +1,12 @@
 package handlers
 
 import (
-	"cmdb/services"
-	"cmdb/utils"
-	"cmdb/web"
+	"MyGoCode/cmdb/services"
+	"MyGoCode/cmdb/utils"
+	"MyGoCode/cmdb/web"
+	//"cmdb/services"
+	//"cmdb/utils"
+	//"cmdb/web"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -49,7 +52,8 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	// 2、ID 来自客户端浏览器提交的 form
 	// 3、表单中的 ID 类型为 string ，需要转换为 int
 	// 4、删除完用户之后需要重新返回用户列表，即重新向 server 端请求一次用户信息
-	if id, err := strconv.Atoi(r.FormValue("id")); err == nil {
+	//if id, err := strconv.Atoi(r.FormValue("id")); err == nil {
+	if id, err := strconv.ParseInt(r.FormValue("id"), 10, 64); err == nil {
 		services.DeleteUser(id)
 	}
 	http.Redirect(w, r, "/users/", http.StatusFound)

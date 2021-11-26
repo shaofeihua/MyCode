@@ -1,11 +1,8 @@
-package models
+package objs
 
-import "time"
-
-type Asset struct {
+type Module struct {
 	 Id int64
-	 Ip string
-	 Addr string
+	 Name string
 	 CreatedAt *time.Time
 	 UpdatedAt *time.Time
 	 DeletedAt *time.Time

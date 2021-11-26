@@ -2,10 +2,9 @@ package models
 
 import "time"
 
-type Asset struct {
-	 Id int64
-	 Ip string
-	 Addr string
+type RelRoleModule struct {
+	 RoleId int64
+	 ModuleId int64
 	 CreatedAt *time.Time
 	 UpdatedAt *time.Time
 	 DeletedAt *time.Time
